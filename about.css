@@ -1,0 +1,28 @@
+/* ABOUT US 専用スタイル。既存の style.css は変更しません。 */
+body.about-page { margin: 0; background: #fff9db; color: #3b3027; font-family: 'Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif; line-height: 1.9; }
+.about-page *, .about-page *::before, .about-page *::after { box-sizing: border-box; }
+.about-page .about-header { background: #fff9db; border-bottom: 1px solid #f1e4ac; }
+.about-header-inner { max-width: 1100px; margin: auto; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.about-brand img { display: block; width: 190px; max-width: 38vw; height: 64px; object-fit: contain; object-position: left center; }
+.about-nav { display: flex; gap: 22px; flex-wrap: wrap; }
+.about-nav a { color: #4b3a27; font-size: 14px; font-weight: 700; text-decoration: none; }
+.about-nav a[aria-current="page"] { border-bottom: 3px solid #f4b900; }
+.about-hero { text-align: center; padding: 70px 24px 45px; background: linear-gradient(180deg,#fff0a9 0%,#fff9db 100%); }
+.about-eyebrow, .about-num { color: #aa7500; font-weight: 800; letter-spacing: .16em; font-size: 12px; }
+.about-hero h1 { font-size: clamp(30px,5vw,48px); margin: 8px 0 4px; line-height: 1.4; }
+.about-lead { font-size: clamp(16px,2.6vw,22px); font-weight: 800; margin: 14px 0 25px; }
+.about-main-logo { display: block; width: min(370px,80vw); max-height: 330px; object-fit: contain; margin: 0 auto; }
+.about-content { max-width: 1000px; margin: 0 auto; padding: 30px 22px 80px; }
+.about-panel { background: #fff; border-radius: 24px; padding: clamp(28px,5vw,56px); margin: 25px 0; display: grid; grid-template-columns: 1.2fr 1fr; gap: 35px; align-items: center; box-shadow: 0 8px 25px rgba(99,75,22,.07); }
+.about-panel h2 { font-size: clamp(23px,3vw,32px); line-height: 1.5; margin: 8px 0 22px; }
+.about-panel p { margin: 0 0 16px; }
+.about-panel .about-num { margin: 0; }
+.about-panel-media img { display: block; width: 100%; max-height: 350px; object-fit: contain; }
+.about-panel-single { display: block; }
+.about-panel-single > p:not(.about-num) { max-width: 750px; }
+.about-emphasis { font-size: clamp(20px,3vw,27px); font-weight: 800; color: #b57a00; line-height: 1.7; padding: 12px 0; }
+.about-actions { text-align: center; padding-top: 20px; }
+.about-home-link { display: inline-block; padding: 13px 30px; border-radius: 999px; background: #efb900; color: #30271b; text-decoration: none; font-weight: 800; }
+.about-home-link:hover { background: #ffd12c; }
+.about-footer { text-align: center; padding: 25px; border-top: 1px solid #f1e4ac; }
+@media(max-width:700px) { .about-header-inner { padding: 8px 16px; } .about-brand img { width: 145px; height: 55px; } .about-nav { gap: 12px; } .about-nav a { font-size: 12px; } .about-hero { padding-top: 42px; } .about-panel { grid-template-columns: 1fr; gap: 10px; } .about-panel-media { order: 2; } }
