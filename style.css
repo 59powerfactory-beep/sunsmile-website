@@ -72,3 +72,9 @@
 .header .brand{display:flex;align-items:center;flex-shrink:0;line-height:1}
 .header .brand-logo{display:block;width:220px;max-width:38vw;height:60px;object-fit:contain;object-position:left center}
 @media(max-width:700px){.header .brand-logo{width:165px;max-width:55vw;height:50px}}
+/* キッチンカーを25px下に移動（PC表示） */
+@media (min-width: 901px) {
+  .hero-photo {
+    transform: translateY(25px);
+  }
+}
