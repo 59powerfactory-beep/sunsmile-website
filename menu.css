@@ -1,0 +1,62 @@
+/* MENU専用CSS：既存の style.css / about.css は変更しません。 */
+body.menu-page { margin:0; background:#fff9db; color:#3b3027; font-family:'Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif; line-height:1.85; }
+.menu-page *, .menu-page *::before, .menu-page *::after { box-sizing:border-box; }
+.menu-page .menu-header { background:#fff9db; border-bottom:1px solid #f1e4ac; }
+.menu-page .menu-header-inner { max-width:1100px; margin:auto; padding:12px 24px; display:flex; justify-content:space-between; align-items:center; gap:18px; }
+.menu-page .menu-brand img { display:block; width:190px; max-width:38vw; height:64px; object-fit:contain; object-position:left center; }
+.menu-page .menu-nav { display:flex; gap:22px; flex-wrap:wrap; }
+.menu-page .menu-nav a { color:#4b3a27; font-size:14px; font-weight:700; text-decoration:none; white-space:nowrap; }
+.menu-page .menu-nav a[aria-current="page"] { border-bottom:3px solid #f4b900; }
+.menu-page .menu-nav a:hover, .menu-page .menu-nav a:focus-visible { color:#9b6700; }
+.menu-page .menu-hero { text-align:center; padding:62px 24px 45px; background:linear-gradient(180deg,#fff0a9 0%,#fff9db 100%); }
+.menu-page .menu-eyebrow { margin:0; color:#aa7500; font-weight:800; letter-spacing:.16em; font-size:12px; }
+.menu-page .menu-hero h1 { font-size:clamp(30px,5vw,48px); line-height:1.4; margin:8px 0; }
+.menu-page .menu-hero-lead { font-size:clamp(17px,2.6vw,23px); font-weight:800; margin:12px 0 10px; }
+.menu-page .menu-hero-description { margin:0 auto; font-size:15px; line-height:1.9; }
+.menu-page .menu-hero-logo { display:block; width:min(220px,54vw); max-height:205px; object-fit:contain; margin:24px auto 0; }
+.menu-page .menu-content { max-width:1050px; margin:0 auto; padding:28px 22px 80px; }
+.menu-page .menu-heading { text-align:center; margin:12px 0 30px; }
+.menu-page .menu-heading h2 { font-size:clamp(22px,3.3vw,31px); margin:10px 0 7px; line-height:1.5; }
+.menu-page .menu-heading > p:last-child { font-size:14px; margin:0; }
+.menu-page .menu-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; }
+.menu-page .menu-card { background:#fff; border-radius:24px; overflow:hidden; box-shadow:0 8px 25px rgba(99,75,22,.07); }
+.menu-page .menu-card-art { min-height:210px; padding:22px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px; }
+.menu-page .menu-card-art-potato { background:linear-gradient(145deg,#ffedb4,#ffd37e); }
+.menu-page .menu-card-art-skewer { background:linear-gradient(145deg,#fce9cb,#ebb98d); }
+.menu-page .menu-card-art-banana { background:linear-gradient(145deg,#ffecd3,#ffd9ce); }
+.menu-page .menu-card-art-lemon { background:linear-gradient(145deg,#eff9ba,#def3a5); }
+.menu-page .menu-card-symbol { font-size:74px; line-height:1.25; }
+.menu-page .menu-card-art-label { font-size:11px; font-weight:900; letter-spacing:.16em; color:#845d24; }
+.menu-page .menu-card-body { padding:25px 30px 30px; }
+.menu-page .menu-card-category { margin:0; color:#b7830b; font-weight:800; letter-spacing:.15em; font-size:11px; }
+.menu-page .menu-card-body h3 { font-size:25px; margin:6px 0 12px; line-height:1.5; }
+.menu-page .menu-card-body > p:last-child { font-size:15px; margin:0; }
+.menu-page .menu-note { font-size:13px; margin:18px 4px 0; color:#71614e; }
+.menu-page .menu-promise { background:#fff; border-radius:24px; padding:clamp(30px,5vw,54px); text-align:center; margin:36px 0 0; box-shadow:0 8px 25px rgba(99,75,22,.06); }
+.menu-page .menu-promise h2 { font-size:clamp(21px,3.3vw,30px); margin:10px 0 16px; line-height:1.5; }
+.menu-page .menu-promise > p:last-child { margin:0; font-size:15px; }
+.menu-page .menu-actions { padding-top:32px; display:flex; justify-content:center; gap:15px; flex-wrap:wrap; }
+.menu-page .menu-actions a { display:inline-block; padding:13px 27px; border-radius:999px; text-decoration:none; font-weight:800; }
+.menu-page .menu-home-link { color:#30271b; background:#efb900; }
+.menu-page .menu-home-link:hover { background:#ffd12c; }
+.menu-page .menu-about-link { background:#fff; color:#5b481e; border:1px solid #ebd688; }
+.menu-page .menu-about-link:hover { background:#fff5c5; }
+.menu-page .menu-footer { text-align:center; padding:25px; border-top:1px solid #f1e4ac; }
+@media(max-width:700px) {
+  .menu-page .menu-header-inner { padding:8px 16px; }
+  .menu-page .menu-brand img { width:135px; height:55px; max-width:36vw; }
+  .menu-page .menu-nav { justify-content:flex-end; gap:11px; }
+  .menu-page .menu-nav a { font-size:11px; }
+  .menu-page .menu-hero { padding:42px 18px 32px; }
+  .menu-page .menu-hero-description { font-size:13px; }
+  .menu-page .menu-grid { grid-template-columns:1fr; gap:18px; }
+  .menu-page .menu-card-art { min-height:174px; }
+  .menu-page .menu-card-symbol { font-size:62px; }
+  .menu-page .menu-card-body { padding:23px 25px 26px; }
+  .menu-page .menu-card-body h3 { font-size:22px; }
+}
+@media(max-width:380px) {
+  .menu-page .menu-brand img { width:110px; }
+  .menu-page .menu-nav { gap:8px; }
+  .menu-page .menu-nav a { font-size:10px; }
+}
