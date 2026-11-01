@@ -62,12 +62,13 @@ body.menu-page { margin:0; background:#fff9db; color:#3b3027; font-family:'Hirag
 }
 
 /* Authentic user-provided product photos */
-.menu-page .menu-photo-wrap { margin:0; position:relative; overflow:hidden; width:100%; height:260px; background:#f9f4e7; }
-.menu-page .menu-photo { width:100%; height:100%; display:block; object-fit:cover; object-position:center center; }
+/* 商品の上下左右を切り抜かず、実物写真を全体表示 */
+.menu-page .menu-photo-wrap { margin:0; position:relative; overflow:hidden; width:100%; height:320px; background:#faf5e9; }
+.menu-page .menu-photo { width:100%; height:100%; display:block; object-fit:contain; object-position:center center; padding:12px; }
 .menu-page .menu-photo-contain { background:#f9edd0; }
-.menu-page .menu-photo-contain .menu-photo { object-fit:contain; padding:6px; }
+.menu-page .menu-photo-contain .menu-photo { object-fit:contain; padding:12px; }
 .menu-page .menu-photo-note { position:absolute; bottom:10px; right:10px; max-width:85%; border-radius:8px; background:rgba(30,25,20,.83); color:white; padding:5px 10px; font-size:11px; line-height:1.5; }
 .menu-page .menu-card-body { padding:22px 26px 27px; }
 .menu-page .menu-card-body h3 { margin:5px 0 9px; }
 .menu-page .menu-photo:focus { outline:2px solid #cc9200; }
-@media(max-width:700px) { .menu-page .menu-photo-wrap { height:230px; } }
+@media(max-width:700px) { .menu-page .menu-photo-wrap { height:300px; } }
