@@ -1,5 +1,6 @@
 (() => {
   'use strict';
+  const ADDRESS = '3sunsmile3@gmail.com';
   const navToggle = document.getElementById('menuBtn');
   const nav = document.getElementById('nav');
   if (navToggle && nav) {
@@ -16,8 +17,35 @@
 
   const form = document.getElementById('inquiryForm');
   const copyButton = document.getElementById('copyInquiry');
+  const mailAppButton = document.getElementById('openMailApp');
   const status = document.getElementById('inquiryStatus');
-  if (!form || !copyButton || !status) return;
+  const directCopyButton = document.getElementById('copyAddress');
+  const directStatus = document.getElementById('directEmailStatus');
+
+  async function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      try { await navigator.clipboard.writeText(text); return true; } catch (_) { /* fallback */ }
+    }
+    const tmp = document.createElement('textarea');
+    tmp.value = text;
+    tmp.setAttribute('readonly', '');
+    tmp.style.position = 'fixed';
+    tmp.style.opacity = '0';
+    document.body.appendChild(tmp);
+    tmp.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (_) { /* unsupported */ }
+    tmp.remove();
+    return ok;
+  }
+
+  if (directCopyButton && directStatus) {
+    directCopyButton.addEventListener('click', async () => {
+      const ok = await copyText(ADDRESS);
+      directStatus.textContent = ok ? 'メールアドレスをコピーしました。メールを開いて宛先に貼り付けてください。' : `コピーできない場合は、${ADDRESS} を選択してコピーしてください。`;
+    });
+  }
+  if (!form || !copyButton || !status || !mailAppButton) return;
 
   const buildMessage = () => {
     const data = new FormData(form);
@@ -39,31 +67,33 @@
       ].join('\n')
     };
   };
-
   const valid = () => {
     if (form.reportValidity()) return true;
     status.textContent = '必須項目を入力してください。';
     return false;
   };
-
+  function makeMailto(message) {
+    return `mailto:${ADDRESS}?subject=${encodeURIComponent(message.subject)}&body=${encodeURIComponent(message.body)}`;
+  }
   form.addEventListener('submit', event => {
     event.preventDefault();
     if (!valid()) return;
     const message = buildMessage();
-    const url = `mailto:3sunsmile3@gmail.com?subject=${encodeURIComponent(message.subject)}&body=${encodeURIComponent(message.body)}`;
-    status.textContent = 'メール作成画面が開いたら内容をご確認のうえ、「送信」を押してください。自動送信ではありません。';
-    window.location.href = url;
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(ADDRESS)}&su=${encodeURIComponent(message.subject)}&body=${encodeURIComponent(message.body)}`;
+    status.textContent = 'Gmailの画面に移動します。内容をご確認のうえ、メールの「送信」を押してください。';
+    // ブラウザのメールアプリ設定に依存しない。ログインが必要な場合はGmailが案内する。
+    window.location.assign(gmailUrl);
   });
-
+  mailAppButton.addEventListener('click', () => {
+    if (!valid()) return;
+    status.textContent = 'メールアプリが開かない場合は、Gmailか「入力内容をコピー」をご利用ください。';
+    window.location.href = makeMailto(buildMessage());
+  });
   copyButton.addEventListener('click', async () => {
     if (!valid()) return;
     const message = buildMessage();
-    const text = `宛先：3sunsmile3@gmail.com\n件名：${message.subject}\n\n${message.body}`;
-    try {
-      await navigator.clipboard.writeText(text);
-      status.textContent = '入力内容をコピーしました。メールアプリに貼り付け、送信してください。';
-    } catch (_) {
-      status.textContent = '自動コピーができませんでした。右側のメールアドレスから直接ご連絡ください。';
-    }
+    const composed = `宛先：${ADDRESS}\n件名：${message.subject}\n\n${message.body}`;
+    const ok = await copyText(composed);
+    status.textContent = ok ? '入力内容をコピーしました。メールの宛先・件名・本文に貼り付け、送信してください。' : 'コピーできませんでした。入力欄から内容を選択してコピーしてください。';
   });
 })();

@@ -76,3 +76,14 @@
 .inquiry-footer>small{display:block;max-width:1240px;margin:22px auto 0;font-size:11px;color:#b3b5bd}
 @media(max-width:970px){.inquiry-hero-inner{grid-template-columns:1fr 1fr;gap:12px}.inquiry-hero-visual img{height:310px}.inquiry-form-layout{grid-template-columns:1fr}.inquiry-contact-aside{grid-template-columns:1fr 1fr}.inquiry-process-layout{gap:28px}}
 @media(max-width:700px){.inquiry-page .header .brand-logo{width:155px;max-width:56vw;height:47px}.inquiry-hero-inner{grid-template-columns:1fr;padding:60px 24px 58px;gap:0}.inquiry-hero h1{font-size:clamp(40px,10vw,56px)}.inquiry-hero-visual{margin-top:12px}.inquiry-hero-visual img{height:270px}.inquiry-hero-caption{right:25px}.inquiry-section{padding:64px 0}.inquiry-container{padding:0 20px}.inquiry-card-grid{grid-template-columns:1fr}.inquiry-process-layout{grid-template-columns:1fr;gap:18px}.inquiry-form-panel{padding:22px 18px}.inquiry-field-row{grid-template-columns:1fr;gap:0}.inquiry-contact-aside{grid-template-columns:1fr}.inquiry-centered{text-align:left}.inquiry-footer-inner{flex-direction:column}.inquiry-footer-links{gap:14px}.inquiry-form-actions{flex-direction:column;align-items:stretch}.inquiry-submit,.inquiry-copy{justify-content:center;width:100%}}
+
+/* 2026-11-02: メールアプリ未設定でも連絡できる送信手段を表示 */
+.inquiry-app-button{background:#e8edf1;color:#232833;border:0;border-radius:100px;padding:16px 20px;font-weight:800;font-size:13px}
+.inquiry-app-button:hover{filter:brightness(.94)}
+.inquiry-direct-actions{display:flex;align-items:stretch;gap:9px;flex-wrap:wrap;margin:18px 0 3px}
+.inquiry-direct-actions a,.inquiry-direct-actions button{display:inline-flex;align-items:center;justify-content:center;text-align:center;border:0;border-radius:100px;padding:11px 13px;font-size:12px;line-height:1.5;font-weight:800;text-decoration:none;cursor:pointer}
+.inquiry-direct-gmail{background:#222633;color:white}
+.inquiry-direct-app{background:white;color:#222633;border:1px solid #9b8751!important}
+.inquiry-direct-copy{background:#ffe17c;color:#242733}
+.inquiry-contact-box .inquiry-direct-status{margin:6px 0 0;font-size:12px;line-height:1.65;color:#8b3660;min-height:0}
+@media(max-width:700px){.inquiry-app-button{width:100%}.inquiry-direct-actions{flex-direction:column}.inquiry-direct-actions a,.inquiry-direct-actions button{width:100%}}

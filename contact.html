@@ -56,7 +56,7 @@
     </section>
     <section class="inquiry-section inquiry-contact" id="inquiry-form" aria-labelledby="form-title">
       <div class="inquiry-container">
-        <div class="inquiry-section-heading inquiry-centered"><p class="inquiry-kicker">03 / CONTACT</p><h2 id="form-title">お気軽に<span>ご相談ください。</span></h2><p>フォームに入力するとメール作成画面が開きます。<strong>メールの「送信」を押して初めてお問い合わせが完了します。</strong></p></div>
+        <div class="inquiry-section-heading inquiry-centered"><p class="inquiry-kicker">03 / CONTACT</p><h2 id="form-title">お気軽に<span>ご相談ください。</span></h2><p>Gmailでのメール作成、またはメールアプリの利用が選べます。<strong>メール画面で「送信」を押して初めてお問い合わせが完了します。</strong></p></div>
         <div class="inquiry-form-layout">
           <div class="inquiry-form-panel">
             <form id="inquiryForm">
@@ -64,13 +64,21 @@
               <div class="inquiry-field-row"><label class="inquiry-field">ご連絡先メールアドレス <span class="inquiry-required">必須</span><input name="replyEmail" type="email" autocomplete="email" required maxlength="130" placeholder="例：sample@example.com"></label><label class="inquiry-field">ご相談内容 <span class="inquiry-required">必須</span><select name="kind" required><option value="" selected disabled>選択してください</option><option>キッチンカー出店依頼</option><option>企業・団体の催事</option><option>イベントの出店調整など</option><option>その他のお問い合わせ</option></select></label></div>
               <div class="inquiry-field-row"><label class="inquiry-field">開催日・期間 <span class="inquiry-optional">未定可</span><input name="date" maxlength="100" placeholder="例：2027年3月20日〜21日 / 未定"></label><label class="inquiry-field">開催場所・地域 <span class="inquiry-optional">未定可</span><input name="place" maxlength="120" placeholder="例：福岡県内 / ○○市"></label></div>
               <label class="inquiry-field">イベントの概要・来場予定人数・出店条件など <span class="inquiry-optional">分かる範囲で</span><textarea name="details" maxlength="1000" rows="5" placeholder="イベントの内容・開催時間・予定来場者数・出店料・電源の有無など、分かる範囲でご記入ください。"></textarea></label>
-              <div class="inquiry-form-actions"><button class="inquiry-submit" type="submit">メール作成画面を開く <span aria-hidden="true">↗</span></button><button class="inquiry-copy" type="button" id="copyInquiry">入力内容をコピー</button></div>
-              <p class="inquiry-form-notice">このフォームでは入力内容をサイトに保存・送信しません。お使いのメールアプリで内容を確認し、送信してください。メールアプリが開かない場合は「入力内容をコピー」を使えます。</p>
+              <div class="inquiry-form-actions"><button class="inquiry-submit" type="submit">Gmailでメールを作成 <span aria-hidden="true">↗</span></button><button class="inquiry-app-button" type="button" id="openMailApp">メールアプリで作成</button><button class="inquiry-copy" type="button" id="copyInquiry">入力内容をコピー</button></div>
+              <p class="inquiry-form-notice">このフォーム自体は送信機能を持ちません。「Gmailでメールを作成」を押すと、Gmailの画面（未ログイン時はログイン画面）が開きます。メールの「送信」を押してください。Gmailを使わない場合は、メールアプリか「入力内容をコピー」をご利用ください。</p>
               <p id="inquiryStatus" class="inquiry-status" role="status" aria-live="polite"></p>
             </form>
           </div>
           <aside class="inquiry-contact-aside">
-            <div class="inquiry-contact-box"><p class="inquiry-kicker">DIRECT EMAIL</p><h3>メールから直接の<br>お問い合わせも歓迎です。</h3><a href="mailto:3sunsmile3@gmail.com?subject=sun%20smile%E5%87%BA%E5%BA%97%E7%9B%B8%E8%AB%87" class="inquiry-email-link">3sunsmile3@gmail.com</a><p>件名に「sun smile 出店相談」とご記入いただくとスムーズです。</p></div>
+            <div class="inquiry-contact-box"><p class="inquiry-kicker">DIRECT EMAIL</p><h3>メールから直接の<br>お問い合わせも歓迎です。</h3>
+              <div class="inquiry-email-link">3sunsmile3@gmail.com</div>
+              <div class="inquiry-direct-actions">
+                <a class="inquiry-direct-gmail" href="https://mail.google.com/mail/?view=cm&fs=1&to=3sunsmile3%40gmail.com&su=sun%20smile%20%E5%87%BA%E5%BA%97%E7%9B%B8%E8%AB%87" target="_blank" rel="noopener noreferrer">Gmailで作成 ↗</a>
+                <a class="inquiry-direct-app" href="mailto:3sunsmile3@gmail.com?subject=sun%20smile%20%E5%87%BA%E5%BA%97%E7%9B%B8%E8%AB%87">メールアプリで作成</a>
+                <button class="inquiry-direct-copy" id="copyAddress" type="button">アドレスをコピー</button>
+              </div>
+              <p id="directEmailStatus" class="inquiry-direct-status" role="status" aria-live="polite"></p>
+              <p>Gmailを使用しない場合は、アドレスをコピーして普段お使いのメールからご連絡ください。件名は「sun smile 出店相談」でお願いします。</p></div>
             <div class="inquiry-contact-box inquiry-social-box"><p class="inquiry-kicker">INSTAGRAM</p><h3>普段の活動はこちら</h3><a href="https://www.instagram.com/sunsmile321/" target="_blank" rel="noopener noreferrer" class="inquiry-instagram-link">@sunsmile321 ↗</a><p>商品・出店実績などをご紹介しています。</p></div>
           </aside>
         </div>
