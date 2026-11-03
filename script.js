@@ -1,17 +1,99 @@
-const KEY='sunSmileBlogPostsV1';
-const seed=[{id:'welcome',date:'2026-10-19',category:'お知らせ',title:'sun smile 公式ホームページへようこそ！',content:'こんにちは！キッチンカー sun smile です。\n\nこのホームページでは、九州各地の出店情報やイベントの様子、日々のお知らせを発信していきます。\n\n黄色いキッチンカーを見かけたら、ぜひお立ち寄りください。皆さまにお会いできるのを楽しみにしています！',image:''}];
-function getPosts(){try{const s=localStorage.getItem(KEY);return s?JSON.parse(s):seed}catch{return seed}}
-function savePosts(p){localStorage.setItem(KEY,JSON.stringify(p))}
-const $=s=>document.querySelector(s);const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let filter='すべて';
-function render(){const posts=getPosts().filter(p=>filter==='すべて'||p.category===filter).sort((a,b)=>b.date.localeCompare(a.date));$('#postList').innerHTML=posts.map(p=>`<article class="post-card" data-id="${safe(p.id)}" tabindex="0" role="button" aria-label="記事を読む ${safe(p.title)}"><div class="post-cover">${p.image?`<img src="${safe(p.image)}" alt="">`:'🚚'}</div><div class="post-card-body"><div class="post-meta">${safe(p.date)} <span>${safe(p.category)}</span></div><h3>${safe(p.title)}</h3><p>${safe(p.content.slice(0,85))}${p.content.length>85?'…':''}</p><div class="post-link">記事を読む ↗</div></div></article>`).join('');$('#emptyState').hidden=posts.length>0;document.querySelectorAll('.post-card').forEach(el=>{const open=()=>openPost(el.dataset.id);el.addEventListener('click',open);el.addEventListener('keydown',e=>{if(e.key==='Enter')open()})});renderAdmin()}
-function openPost(id){const p=getPosts().find(x=>x.id===id);if(!p)return;$('#postDetail').innerHTML=`<div class="post-meta">${safe(p.date)} <span>${safe(p.category)}</span></div><h2>${safe(p.title)}</h2>${p.image?`<img class="post-image" src="${safe(p.image)}" alt="">`:''}<div class="post-body">${safe(p.content)}</div>`;$('#postDialog').showModal()}
-function renderAdmin(){const box=$('#adminList');if(!box)return;box.innerHTML=getPosts().sort((a,b)=>b.date.localeCompare(a.date)).map(p=>`<div class="admin-row"><div><strong>${safe(p.title)}</strong><br><small>${safe(p.date)} / ${safe(p.category)}</small></div><div><button data-edit="${safe(p.id)}">編集</button><button data-delete="${safe(p.id)}">削除</button></div></div>`).join('');box.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>editPost(b.dataset.edit));box.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{if(confirm('この記事を削除しますか？')){savePosts(getPosts().filter(p=>p.id!==b.dataset.delete));render()}})}
-function editPost(id){const p=getPosts().find(x=>x.id===id);if(!p)return;$('#editId').value=p.id;$('#title').value=p.title;$('#date').value=p.date;$('#category').value=p.category;$('#content').value=p.content;$('#imageUrl').value=p.image||'';$('#title').focus()}
-function reset(){ $('#postForm').reset();$('#editId').value='';$('#date').value=new Date().toLocaleDateString('sv-SE')}
-$('#postForm').onsubmit=e=>{e.preventDefault();const id=$('#editId').value||('post-'+Date.now());const p={id,title:$('#title').value.trim(),date:$('#date').value,category:$('#category').value,content:$('#content').value.trim(),image:$('#imageUrl').value.trim()};if(!p.title||!p.content)return;const posts=getPosts().filter(x=>x.id!==id);posts.push(p);try{savePosts(posts)}catch{alert('保存容量が不足しています。画像はURLで指定してください。');return}render();reset();alert('ブラウザ内に保存しました。公開サイト全体への反映にはCMS連携が必要です。')};
-$('#filters').onclick=e=>{if(e.target.dataset.filter){filter=e.target.dataset.filter;document.querySelectorAll('#filters button').forEach(b=>b.classList.toggle('active',b.dataset.filter===filter));render()}};
-$('#adminOpen').onclick=()=>{$('#adminDialog').showModal();reset()};$('#adminClose').onclick=()=>$('#adminDialog').close();$('#postClose').onclick=()=>$('#postDialog').close();$('#resetForm').onclick=reset;
-$('#exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(getPosts(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sun-smile-blog-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
-$('#importFile').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(!Array.isArray(data)||!data.every(p=>typeof p.id==='string'&&typeof p.title==='string'&&typeof p.content==='string'&&typeof p.date==='string'&&['出店情報','イベント報告','お知らせ'].includes(p.category)&&(!p.image||typeof p.image==='string')))throw Error('invalid');if(confirm('現在の記事を読み込んだ記事で置き換えますか？')){savePosts(data);render();reset()}}catch{alert('正しいブログバックアップJSONを選択してください。')}e.target.value=''};
-$('#menuBtn').onclick=()=>$('#nav').classList.toggle('open');document.querySelectorAll('#nav a').forEach(a=>a.onclick=()=>$('#nav').classList.remove('open'));$('#year').textContent=new Date().getFullYear();render();
+"use strict";
+// Pages CMS が書き出す posts.json を、すべてのお客様の端末で共通表示するブログ機能。
+// 従来のブラウザ内の管理画面・localStorageには依存しません。
+const $ = s => document.querySelector(s);
+const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, c => ({
+  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+}[c]));
+const categories = ["出店情報", "イベント報告", "お知らせ", "日記"];
+let posts = [];
+let selectedCategory = "すべて";
+function safeImageUrl(value) {
+  const url = String(value ?? "").trim();
+  if (!url) return "";
+  // Pages CMS は /assets/blog/… のURLを保存します。
+  if (/^\/?assets\/[a-zA-Z0-9_./%\-]+(?:\?[a-zA-Z0-9_=&%\-]+)?$/.test(url) &&
+      !url.split("/").includes("..") && !/%2e/i.test(url)) return url;
+  // 過去の記事にすでに登録したHTTPS写真も利用できます。
+  if (/^https:\/\/[^\s<>"']+$/i.test(url)) return url;
+  return "";
+}
+function normalizePost(p, idx) {
+  if (!p || typeof p !== "object") return null;
+  const title = String(p.title ?? "").trim();
+  const content = String(p.content ?? "").trim();
+  const date = String(p.date ?? "").slice(0, 10);
+  if (!title || title.length > 180 || !content || content.length > 25000 ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+  return {
+    // 管理画面で記事IDの入力は不要です。内部では一覧の位置を識別子に使います。
+    id: String(idx), date, title, content,
+    category: categories.includes(p.category) ? p.category : "お知らせ",
+    image: safeImageUrl(p.image)
+  };
+}
+function render() {
+  const shown = posts.filter(p => selectedCategory === "すべて" || p.category === selectedCategory)
+    .slice().sort((a,b) => b.date.localeCompare(a.date));
+  const list = $("#postList");
+  list.innerHTML = shown.map(p => {
+    const img = p.image;
+    const excerpt = p.content.slice(0, 92).replace(/\s+/g, " ");
+    return `<article class="post-card" data-id="${escapeHtml(p.id)}" tabindex="0" role="button" aria-label="記事を読む：${escapeHtml(p.title)}">
+      <div class="post-cover">${img ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(p.title)}の写真" loading="lazy" decoding="async">` : '🚚'}</div>
+      <div class="post-card-body"><div class="post-meta">${escapeHtml(p.date)} <span>${escapeHtml(p.category)}</span></div>
+      <h3>${escapeHtml(p.title)}</h3><p>${escapeHtml(excerpt)}${p.content.length > 92 ? '…' : ''}</p>
+      <div class="post-link">記事を読む ↗</div></div></article>`;
+  }).join("");
+  $("#emptyState").textContent = "このカテゴリーにはまだ記事がありません。";
+  $("#emptyState").hidden = shown.length > 0;
+}
+function openPost(id) {
+  const p = posts.find(item => item.id === id);
+  if (!p) return;
+  $("#postDetail").innerHTML = `<div class="post-meta">${escapeHtml(p.date)} <span>${escapeHtml(p.category)}</span></div>
+    <h2>${escapeHtml(p.title)}</h2>
+    ${p.image ? `<img class="post-image" src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title)}の写真" loading="lazy">` : ""}
+    <div class="post-body">${escapeHtml(p.content)}</div>`;
+  $("#postDialog").showModal();
+}
+async function loadPosts() {
+  try {
+    const res = await fetch("posts.json", {cache: "no-store"});
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!Array.isArray(data)) throw new Error("記事データが配列ではありません");
+    posts = data.map(normalizePost).filter(Boolean);
+    render();
+  } catch (err) {
+    console.error("ブログの記事を読み込めませんでした", err);
+    $("#postList").innerHTML = "";
+    $("#emptyState").textContent = "記事を読み込めませんでした。少し後でページを更新してください。";
+    $("#emptyState").hidden = false;
+  }
+}
+$("#filters").addEventListener("click", event => {
+  const button = event.target.closest("button[data-filter]");
+  if (!button || !["すべて", ...categories].includes(button.dataset.filter)) return;
+  selectedCategory = button.dataset.filter;
+  document.querySelectorAll("#filters button").forEach(b => b.classList.toggle("active", b === button));
+  render();
+});
+$("#postList").addEventListener("click", event => {
+  const card = event.target.closest(".post-card[data-id]");
+  if (card) openPost(card.dataset.id);
+});
+$("#postList").addEventListener("keydown", event => {
+  const card = event.target.closest(".post-card[data-id]");
+  if (card && (event.key === "Enter" || event.key === " ")) {
+    event.preventDefault(); openPost(card.dataset.id);
+  }
+});
+$("#postClose").addEventListener("click", () => $("#postDialog").close());
+$("#postDialog").addEventListener("click", e => {
+  if (e.target === $("#postDialog")) $("#postDialog").close();
+});
+$("#menuBtn").addEventListener("click", () => $("#nav").classList.toggle("open"));
+document.querySelectorAll("#nav a").forEach(link => link.addEventListener("click", () => $("#nav").classList.remove("open")));
+$("#year").textContent = new Date().getFullYear();
+loadPosts();
