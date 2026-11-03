@@ -1,0 +1,43 @@
+
+media:
+  input: assets/blog
+  output: /assets/blog
+  categories: [image]
+  rename: random
+
+content:
+  - name: blog
+    label: "ブログ・日記を投稿"
+    type: file
+    path: posts.json
+    format: json
+    list: true
+    fields:
+      - name: image
+        label: "写真（1枚）"
+        type: image
+      - name: title
+        label: "タイトル"
+        type: string
+        required: true
+      - name: content
+        label: "本文"
+        type: text
+        required: true
+      - name: date
+        label: "投稿日"
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: category
+        label: "カテゴリー"
+        type: select
+        required: true
+        default: "日記"
+        options:
+          values:
+            - "日記"
+            - "イベント報告"
+            - "出店情報"
+            - "お知らせ"
