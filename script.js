@@ -59,7 +59,7 @@ function openPost(id) {
 }
 async function loadPosts() {
   try {
-    const res = await fetch("posts.json", {cache: "no-store"});
+    const res = await fetch("posts.json?refresh=" + Date.now(), {cache: "no-store"});
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     if (!Array.isArray(data)) throw new Error("記事データが配列ではありません");
@@ -93,7 +93,11 @@ $("#postClose").addEventListener("click", () => $("#postDialog").close());
 $("#postDialog").addEventListener("click", e => {
   if (e.target === $("#postDialog")) $("#postDialog").close();
 });
-$("#menuBtn").addEventListener("click", () => $("#nav").classList.toggle("open"));
-document.querySelectorAll("#nav a").forEach(link => link.addEventListener("click", () => $("#nav").classList.remove("open")));
+// Mobile menu is controlled by a standalone button in index.html.
 $("#year").textContent = new Date().getFullYear();
-loadPosts();
+// Safari may restore a previously visited page from its back-forward cache.
+// Refresh the shared Pages CMS data each time the page is shown.
+window.addEventListener("pageshow", () => { loadPosts(); });
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") loadPosts();
+});
